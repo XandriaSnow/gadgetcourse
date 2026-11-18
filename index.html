@@ -108,7 +108,7 @@ body:not([data-state=upcoming]) .soon{display:none!important}
 .rev{opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s}.rev.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.rev{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}.btn{transition:none}}
 </style>
-  <!-- Meta Pixel Code -->
+<!-- Meta Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -250,8 +250,8 @@ src="https://www.facebook.com/tr?id=1609481056958186&ev=PageView&noscript=1"
     <div class="promo"><p>Regular price: <s data-regular></s></p><div class="big-price" data-promo></div><p style="margin:10px 0"><span class="save">YOU SAVE <span data-savings></span> · 70% OFF</span></p>
       <div class="cdlabel">Offer ends in</div><div class="cd" data-cd><div><b data-h>00</b><span>Hours</span></div><div><b data-m>00</b><span>Mins</span></div><div><b data-s>00</b><span>Secs</span></div></div>
       <p style="margin-top:22px">This is a limited 24-hour opportunity to get the complete Gadget Importation Guide and its accompanying bonus package at a significantly reduced price.</p>
-      <p>Once the campaign ends, the course returns to its regular price of <span data-regular></span>.</p>
-      <p>We’re not promising that another <span data-promo></span> opportunity will come around. If learning how to source, import and sell gadgets is something you’ve been considering, this is your opportunity to get started at a reduced price.</p>
+      <p>The flash sale runs in 24-hour rounds, and each new round starts as soon as the last one ends. The regular price of <span data-regular></span> applies outside the flash sale, and we may change or end the flash sale at any time.</p>
+      <p>If learning how to source, import and sell gadgets is something you’ve been considering, today’s round is your opportunity to get started at the reduced price.</p>
     </div>
     <div class="reg"><div class="big-price" data-regular></div><p class="ended" style="margin-top:14px">The 24-hour promotional price is no longer available. The Gadget Importation Guide is now at its regular price.</p><p class="soon" style="margin-top:14px">The flash sale opens <b data-startlabel></b> and runs for exactly 24 hours. Until then the regular price applies.</p></div>
     <a class="btn big" data-buy data-promo-text="YES! I WANT THE GADGET IMPORTATION GUIDE" data-reg-text="GET THE GUIDE FOR ₦50,000">YES! I WANT THE GADGET IMPORTATION GUIDE</a>
@@ -278,7 +278,7 @@ src="https://www.facebook.com/tr?id=1609481056958186&ev=PageView&noscript=1"
   <p class="promo" style="font-size:1.4rem"><b style="font-family:var(--serif);color:var(--wine)" data-promo></b> instead of <s data-regular></s></p>
   <p class="reg" style="font-size:1.4rem"><b style="font-family:var(--serif);color:var(--wine)" data-regular></b></p>
   <a class="btn big" data-buy data-promo-text="GET ACCESS NOW" data-reg-text="GET ACCESS NOW">GET ACCESS NOW</a>
-  <p class="note promo">The promotional offer expires when the countdown reaches zero.</p>
+  <p class="note promo">Each flash-sale round ends when the countdown reaches zero, then the next 24-hour round begins.</p>
   <p class="note ended">The promotional offer has ended. The regular price applies.</p><p class="note soon">The 24-hour flash sale has not started yet. The regular price applies until it opens.</p></div>
 </div>
 </section>
@@ -306,6 +306,7 @@ const CONFIG = {
   // CAMPAIGN START (fixed). Expiry is always exactly 24 hours later, so every visitor sees the same deadline.
   // Format: YYYY-MM-DDTHH:MM:SS+01:00 (+01:00 = Africa/Lagos). Set it to match the offer you configure on Nestuge.
   promoStart: "2026-11-10T10:58:00+01:00",
+  repeatDaily: true,   // true = a new 24-hour round starts by itself each time one ends; false = one single round
   regularPrice: 50000,
   promoPrice:   15000,
   heroVideo: "hero.mp4",          // e.g. "media/hero.mp4" (optional)
@@ -326,7 +327,7 @@ const CONFIG = {
 const naira = n => "₦" + n.toLocaleString("en-NG");
 const $$ = s => document.querySelectorAll(s);
 const start = new Date(CONFIG.promoStart).getTime();
-const expiry = start + 24 * 3600 * 1000;
+let expiry = start + 24 * 3600 * 1000;
 const savings = CONFIG.regularPrice - CONFIG.promoPrice;
 
 /* ---- prices & links ---- */
@@ -357,6 +358,7 @@ function tick() {
   const now = Date.now();
   if (isNaN(start)) { setState("expired"); return false; }
   if (now < start) { if (state !== "upcoming") setState("upcoming"); return true; }
+  if (CONFIG.repeatDaily) expiry = start + (Math.floor((now - start) / 86400000) + 1) * 86400000;
   const left = expiry - now;
   if (left <= 0) { if (state !== "expired") setState("expired"); return false; }
   if (state !== "live") setState("live");
@@ -404,7 +406,7 @@ const faqs = [
  ["How does shipping to Nigeria work?","The guide covers importation and shipping: how to get your gadgets from China to Nigeria and the important things to consider along the way. You’ll also learn how to calculate your total costs before you commit."],
  ["Will I receive support?","Yes. You’ll have access to the student community and mentorship support."],
  ["How long will I have access?","Your access details are confirmed at checkout and on your course page after you enrol. The Lifetime Gadget Supplier Updates bonus comes with lifetime access to that supplier resource."],
- ["What happens when the promotional offer expires?","The ₦15,000 flash-sale price ends at the deadline shown on the countdown. After that, the regular price of ₦50,000 applies, and this page updates automatically."],
+ ["What happens when the promotional offer expires?","Each flash-sale round lasts 24 hours. When the countdown reaches zero, the next 24-hour round begins at the same ₦15,000 price. The regular price of ₦50,000 applies outside flash sales, and we may change or end the flash sale at any time."],
  ["How does the advertising setup support work?","If you’re ready to advertise, I’ll help you set up and launch one initial advertising campaign and guide the relevant advertising decisions. You provide your own advertising budget, your business information and your ad creative, and you need your business page ready. It covers one initial campaign per student. It is not ongoing campaign management, free ad credit or a guarantee of sales."]];
 $("faq").innerHTML = faqs.map(f=>`<details class="rev"><summary>${f[0]}</summary><p>${f[1]}</p></details>`).join("");
 
