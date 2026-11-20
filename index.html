@@ -125,6 +125,19 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=1609481056958186&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
+<!-- TikTok Pixel Code Start -->
+<script>
+!function (w, d, t) {
+  w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(
+var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script")
+;n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+
+
+  ttq.load('D97T8NJC77UBS5FS7RCG');
+  ttq.page();
+}(window, document, 'ttq');
+</script>
+<!-- TikTok Pixel Code End -->
 </head>
 <body data-state="live">
 
@@ -438,6 +451,24 @@ document.addEventListener("click", e => { const im = e.target.closest(".tile img
   const o = document.createElement("div"); o.style.cssText = "position:fixed;inset:0;z-index:2147483600;background:rgba(0,0,0,.92);display:grid;place-items:center;padding:16px;cursor:zoom-out";
   o.innerHTML = '<img alt="" style="max-width:100%;max-height:100%;object-fit:contain;border-radius:8px"><span style="position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:18px;color:#fff;font:700 32px/1 sans-serif">×</span>';
   o.querySelector("img").src = im.src; o.onclick = () => o.remove(); document.body.appendChild(o); });
+</script>
+<script>
+/* Ad tracking: ViewContent on load, InitiateCheckout when any buy button is tapped (TikTok + Meta) */
+(function () {
+  function info() {
+    var live = document.body.dataset.state === "live";
+    return { contents: [{ content_id: "gadget-importation-guide", content_type: "product", content_name: "Gadget Importation Guide" }],
+             value: live ? CONFIG.promoPrice : CONFIG.regularPrice, currency: "NGN" };
+  }
+  try { var v = info(); if (window.ttq) ttq.track("ViewContent", v);
+        if (window.fbq) fbq("track", "ViewContent", { content_name: "Gadget Importation Guide", value: v.value, currency: "NGN" }); } catch (e) {}
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("[data-buy]"); if (!a) return;
+    var d = info();
+    try { if (window.ttq) ttq.track("InitiateCheckout", d); } catch (x) {}
+    try { if (window.fbq) fbq("track", "InitiateCheckout", { content_name: "Gadget Importation Guide", value: d.value, currency: "NGN" }); } catch (x) {}
+  }, true);
+})();
 </script>
 </body>
 </html>
